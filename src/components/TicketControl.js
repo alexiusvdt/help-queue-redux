@@ -3,14 +3,16 @@ import NewTicketForm from './NewTicketForm';
 import TicketList from './TicketList';
 import EditTicketForm from './EditTicketForm';
 import TicketDetail from './TicketDetail';
+import { connect } from 'react-redux';
+import PropTypes from "prop-types";
 
 class TicketControl extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log("constructor consolelog", props);
     this.state = {
       formVisibleOnPage: false,
-      mainTicketList: [],
       selectedTicket: null,
       editing: false
     };
@@ -31,31 +33,51 @@ class TicketControl extends React.Component {
   }
 
   handleDeletingTicket = (id) => {
-    const newMainTicketList = this.state.mainTicketList.filter(ticket => ticket.id !== id);
-    this.setState({
-      mainTicketList: newMainTicketList,
-      selectedTicket: null
-    });
+    const { dispatch } = this.props;
+    const action = {
+      type: 'DELETE_TICKET',
+      id: id
+    }
+    dispatch(action);
+    this.setState({selectedTicket: null});
   }
 
   handleEditClick = () => {
     this.setState({editing: true});
   }
 
+  //add ticket does double duty with here and new ticket to list
+  // the only difference between these two is whether or not an id already exists
+  // if it's a new id, a new ticket will fire, otherwise existing ticket will be replaced
+  // consider updating type to ADD_OR_UPDATE_TICKET ?
   handleEditingTicketInList = (ticketToEdit) => {
-    const editedMainTicketList = this.state.mainTicketList
-      .filter(ticket => ticket.id !== this.state.selectedTicket.id)
-      .concat(ticketToEdit);
+    const { dispatch } = this.props;
+    const { id, names, location, issue } = ticketToEdit;
+    const action = {
+      type: 'ADD_TICKET',
+      id: id,
+      names: names,
+      location: location,
+      issue: issue,
+    }
+    dispatch(action);
     this.setState({
-      mainTicketList: editedMainTicketList,
       editing: false,
       selectedTicket: null
     });
   }
 
   handleAddingNewTicketToList = (newTicket) => {
-    const newMainTicketList = this.state.mainTicketList.concat(newTicket);
-    this.setState({mainTicketList: newMainTicketList});
+    const { dispatch } = this.props;
+    const { id, names, location, issue } = newTicket;
+    const action = {
+      type: 'ADD_TICKET',
+      id: id,
+      names: names,
+      location: location,
+      issue: issue,
+    }
+    dispatch(action);
     this.setState({formVisibleOnPage: false});
   }
 
@@ -90,8 +112,24 @@ class TicketControl extends React.Component {
       </React.Fragment>
     );
   }
-
 }
+
+TicketControl.propTypes = {
+  mainTicketList: PropTypes.object
+};
+
+// The K/V pairs determine state slices that should be mapped to component props.
+// here we want mainTicketList in the store to map to TicketControl's props
+const mapStateToProps = state => {
+  return {
+    // Key-value pairs of state to be mapped from Redux to React component go here.
+    mainTicketList: state
+  }
+}
+
+// pass in the map so TicketControl component has mapStateToProps when connect() redifines a component
+// always call connect() right before export
+TicketControl = connect(mapStateToProps)(TicketControl);
 
 export default TicketControl;
 
