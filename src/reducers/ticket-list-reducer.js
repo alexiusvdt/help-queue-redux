@@ -13,7 +13,12 @@ const reducer = (state = {}, action) => {
         issue: issue,
         id: id
       }
-    });
+    });    
+    case 'DELETE_TICKET':
+      //create shallow copy, delete index of [id] and return new obj...clean!
+      let newState = { ...state };
+      delete newState[id];
+      return newState;
     default:
       return state;  
   }
