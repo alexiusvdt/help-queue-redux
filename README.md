@@ -3,7 +3,21 @@
 # In this repo:
   * review testing
   * implement reducers/state mgmt
+  * adding Redux/ReactRedux bindings to a project
 
+# package info
+
+`$ npm install redux@4.2.0 react-redux@8.0.2`
+
+# Adding Redux Store 
+
+  * import `{createStore} from redux and `reducer` from src
+  * create the `store` const
+  * import `{ Provider }` from react-redux
+  * wrap `<App />` inside of `<Provider>`
+  * pass `store` into `<Provider>` as a prop
+  * add `connect()` to components that need access to `store` (in this case, ticketControl)
+  * 
 
 ## Coursework links
 
