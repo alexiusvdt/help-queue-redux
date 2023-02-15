@@ -10,6 +10,8 @@
 `$ npm install redux@4.2.0 react-redux@8.0.2`
 
 # Adding Redux Store 
+*view commit history to see the app changes!
+
   Begin
   * in `src/index.js` entrypoint
   * import `{createStore}` from redux and `reducer`

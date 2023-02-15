@@ -12,23 +12,30 @@ class TicketControl extends React.Component {
     super(props);
     console.log("constructor consolelog", props);
     this.state = {
-      formVisibleOnPage: false,
+      // formVisibleOnPage: false, <-- now handled by Redux
       selectedTicket: null,
       editing: false
     };
   }
-
+  //probably better off as two separate methods as now this is quite clunky
   handleClick = () => {
     if (this.state.selectedTicket != null) {
       this.setState({
-        formVisibleOnPage: false,
+        // formVisibleOnPage: false, <-- now handled by Redux
         selectedTicket: null,
         editing: false
       });
     } else {
-      this.setState(prevState => ({
-        formVisibleOnPage: !prevState.formVisibleOnPage,
-      }));
+      const { dispatch } = this.props;
+      const action = {
+        type: 'TOGGLE_FORM'
+      }
+      dispatch(action);
+
+
+      // this.setState(prevState => ({
+      //   formVisibleOnPage: !prevState.formVisibleOnPage, <-- now handled by Redux
+      // }));
     }
   }
 
@@ -67,6 +74,8 @@ class TicketControl extends React.Component {
     });
   }
 
+
+  // this method now dispatches 2 actions. be wary of this as it may create race conditions due to the async nature of these calls
   handleAddingNewTicketToList = (newTicket) => {
     const { dispatch } = this.props;
     const { id, names, location, issue } = newTicket;
@@ -78,7 +87,12 @@ class TicketControl extends React.Component {
       issue: issue,
     }
     dispatch(action);
-    this.setState({formVisibleOnPage: false});
+    const action2 = {
+      type: 'TOGGLE_FORM'
+    }
+    // We deconstruct the dispatch function from this.props if needed, define the action in a constant, and then dispatch it.
+    dispatch(action2);
+    // this.setState({formVisibleOnPage: false}); <-- now handled by Redux
   }
 
   handleChangingSelectedTicket = (id) => {
@@ -98,7 +112,8 @@ class TicketControl extends React.Component {
       onClickingDelete={this.handleDeletingTicket}
       onClickingEdit = {this.handleEditClick} />
       buttonText = "Return to Ticket List";
-    } else if (this.state.formVisibleOnPage) {
+      //formvisible is now in props
+    } else if (this.props.formVisibleOnPage) {
       currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList}/>;
       buttonText = "Return to Ticket List"; 
     } else {
@@ -115,18 +130,18 @@ class TicketControl extends React.Component {
 }
 
 TicketControl.propTypes = {
-  mainTicketList: PropTypes.object
+  mainTicketList: PropTypes.object,
+  formVisibleOnPage: PropTypes.bool
 };
 
-// The K/V pairs determine state slices that should be mapped to component props.
-// here we want mainTicketList in the store to map to TicketControl's props
+
 const mapStateToProps = state => {
   return {
-    // Key-value pairs of state to be mapped from Redux to React component go here.
-    mainTicketList: state
+    mainTicketList: state.mainTicketList,
+    formVisibleOnPage: state.formVisibleOnPage
   }
 }
-
+// this doesnt need to change on redux implementation
 // pass in the map so TicketControl component has mapStateToProps when connect() redifines a component
 // always call connect() right before export
 TicketControl = connect(mapStateToProps)(TicketControl);
