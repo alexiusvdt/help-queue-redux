@@ -29,6 +29,18 @@
   * refactor any actions as needed
   * ensure Control rcvs info from this.props (as props are now mapped from the store instead of this.state (ie the component state))
 
+## Action Creators/Constants
+  * action creators DRY up code. Instead of:
+  ```const action = {
+    type: 'DELETE_TICKET`,
+    id: id
+  }```
+  We can instead make a function to handle the del action:
+  ``` const deleteTicket = id => ({
+    type: 'DELETE_TICKET',
+    id
+  })```
+
 
 ## Coursework links
 
@@ -36,7 +48,9 @@ This project contains all the code from the LearnHowToProgram.com [Section 2: Re
 
 It is meant to be used as a starter repo to continue the Help Queue project in three separate learning sections of [the _React_ course](https://www.learnhowtoprogram.com/react) on LearnHowToProgram.com: 
 
-* Section 3 "React with Redux", starting in the lesson titled ["Setting up Our First Redux Project"](https://www.learnhowtoprogram.com/react/react-with-redux/setting-up-our-first-project).
+* Section 3 "React with Redux", starting in the lesson titled ["Setting up Our First Redux Project"](https://www.learnhowtoprogram.com/react/react-with-redux/setting-up-our-first-project). 
+
+
 * Section 4 "React with NoSQL", starting in the lessons titled ["Refactoring Help Queue to Use Hooks"](https://www.learnhowtoprogram.com/react/react-with-nosql/refactoring-help-queue-to-use-hooks).
 * Section 5 "React with APIs", starting in the lesson title ["React Context"](https://www.learnhowtoprogram.com/react/react-with-apis/react-context)
 
