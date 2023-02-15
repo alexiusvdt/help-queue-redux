@@ -27,7 +27,7 @@ describe ('ticketListReducer', () => {
 
   test('Should successfully delete a ticket', () => {
     action = {
-      type: 'DELETE_TICKET',
+      type: c.DELETE_TICKET,
       id: 1
     };
     expect(ticketListReducer(currentState, action)).toEqual({
