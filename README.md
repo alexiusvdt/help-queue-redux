@@ -10,14 +10,23 @@
 `$ npm install redux@4.2.0 react-redux@8.0.2`
 
 # Adding Redux Store 
-
-  * import `{createStore} from redux and `reducer` from src
+  Begin
+  * in `src/index.js` entrypoint
+  * import `{createStore}` from redux and `reducer`
   * create the `store` const
   * import `{ Provider }` from react-redux
   * wrap `<App />` inside of `<Provider>`
   * pass `store` into `<Provider>` as a prop
   * add `connect()` to components that need access to `store` (in this case, ticketControl)
-  * 
+  Reducers
+  * build reducers & combine into rootReducer
+  Implement reducers
+  * pass the root reducer into store in src/index.js entrypoint
+  * update any mapping functions to handle new state slices
+  * remove functions from Controller state as Redux will handle that
+  * refactor any actions as needed
+  * ensure Control rcvs info from this.props (as props are now mapped from the store instead of this.state (ie the component state))
+
 
 ## Coursework links
 
