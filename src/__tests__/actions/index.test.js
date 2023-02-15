@@ -15,16 +15,16 @@ describe('Help Queue actions', () => {
   });
   it('addTicket should create ADD_TICKET action', () => {
     expect(actions.addTicket({
-      type: 'ADD_TICKET',
       names: 'Sisko and Jadzia',
       location: 'Bajor',
       issue: 'The Dominion is messing everything up again.',
       id: 1 
     })).toEqual({
-      names: 'Garak and Bashir',
-      location: 'Quarks',
-      issue: 'Redux action is not working.',
-      id: 2
+      type: 'ADD_TICKET',
+      names: 'Sisko and Jadzia',
+      location: 'Bajor',
+      issue: 'The Dominion is messing everything up again.',
+      id: 1 
     });
   });
 });
