@@ -5,6 +5,7 @@ import EditTicketForm from './EditTicketForm';
 import TicketDetail from './TicketDetail';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
+import * as a from './../actions';
 
 class TicketControl extends React.Component {
 
@@ -12,7 +13,6 @@ class TicketControl extends React.Component {
     super(props);
     console.log("constructor consolelog", props);
     this.state = {
-      // formVisibleOnPage: false, <-- now handled by Redux
       selectedTicket: null,
       editing: false
     };
@@ -21,30 +21,20 @@ class TicketControl extends React.Component {
   handleClick = () => {
     if (this.state.selectedTicket != null) {
       this.setState({
-        // formVisibleOnPage: false, <-- now handled by Redux
         selectedTicket: null,
         editing: false
       });
     } else {
       const { dispatch } = this.props;
-      const action = {
-        type: 'TOGGLE_FORM'
-      }
+      //new code here!
+      const action = a.toggleForm();
       dispatch(action);
-
-
-      // this.setState(prevState => ({
-      //   formVisibleOnPage: !prevState.formVisibleOnPage, <-- now handled by Redux
-      // }));
     }
   }
 
   handleDeletingTicket = (id) => {
     const { dispatch } = this.props;
-    const action = {
-      type: 'DELETE_TICKET',
-      id: id
-    }
+    const action = a.deleteTicket(id)
     dispatch(action);
     this.setState({selectedTicket: null});
   }
@@ -59,14 +49,9 @@ class TicketControl extends React.Component {
   // consider updating type to ADD_OR_UPDATE_TICKET ?
   handleEditingTicketInList = (ticketToEdit) => {
     const { dispatch } = this.props;
-    const { id, names, location, issue } = ticketToEdit;
-    const action = {
-      type: 'ADD_TICKET',
-      id: id,
-      names: names,
-      location: location,
-      issue: issue,
-    }
+    //this can go 
+    // const { id, names, location, issue } = ticketToEdit;
+    const action = a.addTicket(ticketToEdit)
     dispatch(action);
     this.setState({
       editing: false,
@@ -78,21 +63,10 @@ class TicketControl extends React.Component {
   // this method now dispatches 2 actions. be wary of this as it may create race conditions due to the async nature of these calls
   handleAddingNewTicketToList = (newTicket) => {
     const { dispatch } = this.props;
-    const { id, names, location, issue } = newTicket;
-    const action = {
-      type: 'ADD_TICKET',
-      id: id,
-      names: names,
-      location: location,
-      issue: issue,
-    }
+    const action = a.addTicket(newTicket)
     dispatch(action);
-    const action2 = {
-      type: 'TOGGLE_FORM'
-    }
-    // We deconstruct the dispatch function from this.props if needed, define the action in a constant, and then dispatch it.
+    const action2 = a.toggleForm();
     dispatch(action2);
-    // this.setState({formVisibleOnPage: false}); <-- now handled by Redux
   }
 
   handleChangingSelectedTicket = (id) => {

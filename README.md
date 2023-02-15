@@ -41,6 +41,10 @@
     id
   })```
 
+  *now whenever we want to delete we can 
+  ```const action = deleteTicket(id);
+
+  * write tests & then implement into control
 
 ## Coursework links
 
