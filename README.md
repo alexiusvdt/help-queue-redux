@@ -45,6 +45,17 @@
   ```const action = deleteTicket(id);
 
   * write tests & then implement into control
+  * Now, using strings here ('DELETE_TICKET') is a potential source of error. calling TOGGLE_FORM then passing TOGLE_FORM will not throw an error, just fail to execute correctly.
+  * if we instead declare a constant:
+  ``` const TOGGLE_FORM = 'TOGGLE_FORM';
+        ...
+      actionConditional(TOGLE_FORM);
+      ```
+  we will get an uncaught ReferencError: TOGLE_FORM is not defined. Yippee!
+  
+  * Organize your constants in a centralized file in the actions dir, exporting them all.
+  * import * as c from ./../dir
+  * refactor
 
 ## Coursework links
 
